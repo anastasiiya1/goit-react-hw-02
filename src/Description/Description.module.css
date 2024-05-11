@@ -1,0 +1,15 @@
+.title{
+	background: linear-gradient(45deg, #ff0000, #ff7700, #ffdd00, #00ddff, #7700ff, #ff00dd);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.icon{
+	width: 100px;
+	height: 100px;
+}
+
+.text{
+	font-style: italic;	
+}
