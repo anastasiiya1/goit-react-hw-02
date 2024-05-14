@@ -3,7 +3,6 @@ import Description from "./components/Description/Description";
 import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
 import Notification from "./components/Notification/Notification";
-import clsx from "clsx";
 import "./App.css";
 import { PiSmileyLight } from "react-icons/pi";
 import { PiSmileyMehLight } from "react-icons/pi";
@@ -22,7 +21,7 @@ function App() {
     if (savedFeedback !== null) {
       return JSON.parse(savedFeedback);
     }
-    return startFeedback
+    return startFeedback;
   });
 
   useEffect(() => {
@@ -36,7 +35,7 @@ function App() {
     }));
   }
 
-  function handleReset(){
+  function handleReset() {
     setFeedback(startFeedback);
   }
 
@@ -44,32 +43,40 @@ function App() {
   const totalFeedback = good + neutral + bad;
 
   const isActive = totalFeedback > 0;
-  const feedbackState = clsx(!isActive ? "hide" : "show");
+  const positivePercent = totalFeedback
+    ? Math.round((good / totalFeedback) * 100)
+    : 0;
 
   return (
     <>
       <Description />
-      <div>
-        <Options onClick={updateFeedback} feedbackType="good">Good <PiSmileyLight /></Options>
-        <Options onClick={updateFeedback} feedbackType="neutral">Neutral <PiSmileyMehLight /></Options>
-        <Options onClick={updateFeedback} feedbackType="bad">Bad <PiSmileySad /></Options>
+      
+      <Options onClick={updateFeedback} feedbackType="good">
+        Good <PiSmileyLight />
+      </Options>
+      <Options onClick={updateFeedback} feedbackType="neutral">
+        Neutral <PiSmileyMehLight />
+      </Options>
+      <Options onClick={updateFeedback} feedbackType="bad">
+        Bad <PiSmileySad />
+      </Options>
 
-        {isActive && (
-          <Options onClick={handleReset}>Reset <RxReset /></Options>
-        )}
-      </div>
+      {isActive && (
+        <Options onClick={handleReset}>
+          Reset <RxReset />
+        </Options>
+      )}
 
       {!isActive && <Notification />}
 
       {isActive && (
-        <div >
-          <Feedback>Good: {good}</Feedback>
-          <Feedback>Neutral: {neutral}</Feedback>
-          <Feedback>Bad: {bad}</Feedback>
-
-          <Feedback className={feedbackState}>Total: {totalFeedback}</Feedback>
-          <Feedback>Positive: {Math.round((good / totalFeedback) * 100)}%</Feedback>
-        </div>
+        <Feedback
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={totalFeedback}
+          positivePercent={positivePercent}
+        />
       )}
     </>
   );

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import css from "./Options.module.css";
 
 const Options = ({onClick, children, feedbackType}) => {
@@ -7,5 +8,11 @@ const Options = ({onClick, children, feedbackType}) => {
     </>
   );
 };
+
+Options.propTypes = {
+  onClick: PropTypes.func,
+  feedbackType: PropTypes.string,
+  children: PropTypes.node,
+}
 
 export default Options;
