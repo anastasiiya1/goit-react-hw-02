@@ -4,10 +4,6 @@ import Options from "./components/Options/Options";
 import Feedback from "./components/Feedback/Feedback";
 import Notification from "./components/Notification/Notification";
 import "./App.css";
-import { PiSmileyLight } from "react-icons/pi";
-import { PiSmileyMehLight } from "react-icons/pi";
-import { PiSmileySad } from "react-icons/pi";
-import { RxReset } from "react-icons/rx";
 
 function App() {
   const startFeedback = {
@@ -35,49 +31,26 @@ function App() {
     }));
   }
 
-  function handleReset() {
-    setFeedback(startFeedback);
-  }
-
   const { good, neutral, bad } = feedback;
+  
   const totalFeedback = good + neutral + bad;
-
-  const isActive = totalFeedback > 0;
-  const positivePercent = totalFeedback
-    ? Math.round((good / totalFeedback) * 100)
-    : 0;
+  const positivePercent = totalFeedback ? Math.round((good / totalFeedback) * 100): 0;
 
   return (
     <>
       <Description />
-      
-      <Options onClick={updateFeedback} feedbackType="good">
-        Good <PiSmileyLight />
-      </Options>
-      <Options onClick={updateFeedback} feedbackType="neutral">
-        Neutral <PiSmileyMehLight />
-      </Options>
-      <Options onClick={updateFeedback} feedbackType="bad">
-        Bad <PiSmileySad />
-      </Options>
 
-      {isActive && (
-        <Options onClick={handleReset}>
-          Reset <RxReset />
-        </Options>
-      )}
+      <Options onClick={updateFeedback} />
 
-      {!isActive && <Notification />}
+      <Notification />
 
-      {isActive && (
-        <Feedback
-          good={good}
-          neutral={neutral}
-          bad={bad}
-          total={totalFeedback}
-          positivePercent={positivePercent}
-        />
-      )}
+      <Feedback
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={totalFeedback}
+        positivePercent={positivePercent}
+      />
     </>
   );
 }
