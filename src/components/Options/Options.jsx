@@ -1,32 +1,41 @@
 import PropTypes from 'prop-types';
+import { useState } from "react";
+import css from "./Options.module.css";
 import { PiSmileyLight } from "react-icons/pi";
 import { PiSmileyMehLight } from "react-icons/pi";
 import { PiSmileySad } from "react-icons/pi";
 import { RxReset } from "react-icons/rx";
-import css from "./Options.module.css";
 
-const Options = ({ onClick, feedbackType, totalFeedback }) => {
+const Options = ({ onUpdateFeedback }) => {
+  const [feedbackType, setFeedbackType] = useState("");
+
+  const handleUpdateFeedback = (type) => {
+    setFeedbackType(type);
+    onUpdateFeedback(type);
+  };
+
   return (
     <>
-      {feedbackType === "good" && (<button className={css.button} onClick={() => onClick(feedbackType)}>
+      <button className={css.button} onClick={() => handleUpdateFeedback("good")}>
         Good <PiSmileyLight />
-      </button>)}
-      {feedbackType === "neutral" && (<button className={css.button} onClick={() => onClick(feedbackType)}>
-        Neutral <PiSmileyMehLight /></button>)}
-      {feedbackType === "bad" && (<button className={css.button} onClick={() => onClick(feedbackType)}>
-        Bad <PiSmileySad/>
-      </button>)}
-      {feedbackType === "reset" && totalFeedback > 0 && (<button className={css.button} onClick={onClick}>
-        Reset <RxReset />
-      </button>)}
+      </button>
+      <button className={css.button} onClick={() => handleUpdateFeedback("neutral")}>
+        Neutral <PiSmileyMehLight />
+      </button>
+      <button className={css.button} onClick={() => handleUpdateFeedback("bad")}>
+        Bad <PiSmileySad />
+      </button>
+      {feedbackType !== "" && (
+        <button className={css.button} onClick={() => handleUpdateFeedback("")}>
+          Reset <RxReset />
+        </button>
+      )}
     </>
   );
 };
 
 Options.propTypes = {
-  feedbackType: PropTypes.string,
-  onClick: PropTypes.func,
-  totalFeedback: PropTypes.number,
-}
+  onUpdateFeedback: PropTypes.func.isRequired,
+};
 
 export default Options;

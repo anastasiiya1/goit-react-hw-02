@@ -25,32 +25,41 @@ function App() {
   }, [feedback]);
 
   function updateFeedback(feedbackType) {
-    setFeedback((previousState) => ({
-      ...previousState,
-      [feedbackType]: previousState[feedbackType] + 1,
-    }));
+    if (feedbackType === "") {
+      setFeedback(startFeedback);
+    } else {
+      setFeedback((previousState) => ({
+        ...previousState,
+        [feedbackType]: previousState[feedbackType] + 1,
+      }));
+    }
   }
 
   const { good, neutral, bad } = feedback;
-  
   const totalFeedback = good + neutral + bad;
-  const positivePercent = totalFeedback ? Math.round((good / totalFeedback) * 100): 0;
+
+  const isActive = totalFeedback > 0;
+  const positivePercent = totalFeedback
+    ? Math.round((good / totalFeedback) * 100)
+    : 0;
 
   return (
     <>
       <Description />
+      
+      <Options onUpdateFeedback={updateFeedback} />
 
-      <Options onClick={updateFeedback} />
+      {!isActive && <Notification />}
 
-      <Notification />
-
-      <Feedback
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        total={totalFeedback}
-        positivePercent={positivePercent}
-      />
+      {isActive && (
+        <Feedback
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={totalFeedback}
+          positivePercent={positivePercent}
+        />
+      )}
     </>
   );
 }
